@@ -1,0 +1,69 @@
+use semilla_db;
+db.createCollection("productos")
+
+db.productos.insertMany([
+    // Semillas
+    { tipo: 'semilla', nombre: 'chia', peso: 250 },
+    { tipo: 'semilla', nombre: 'chia', peso: 500 },
+    { tipo: 'semilla', nombre: 'chia', peso: 1000 },
+    { tipo: 'semilla', nombre: 'lino', peso: 250 },
+    { tipo: 'semilla', nombre: 'lino', peso: 500 },
+    { tipo: 'semilla', nombre: 'lino', peso: 1000 },
+    { tipo: 'semilla', nombre: 'girasol', peso: 250 },
+    { tipo: 'semilla', nombre: 'girasol', peso: 500 },
+    { tipo: 'semilla', nombre: 'girasol', peso: 1000 },
+    { tipo: 'semilla', nombre: 'sesamo', peso: 250 },
+    { tipo: 'semilla', nombre: 'sesamo', peso: 500 },
+    { tipo: 'semilla', nombre: 'sesamo', peso: 1000 },
+    { tipo: 'semilla', nombre: 'amapola', peso: 250 },
+    { tipo: 'semilla', nombre: 'amapola', peso: 500 },
+    { tipo: 'semilla', nombre: 'amapola', peso: 1000 },
+    // Mermeladas
+    { tipo: 'mermelada', marca: 'Arcor', sabor: 'frutilla', peso: 400 },
+    { tipo: 'mermelada', marca: 'Arcor', sabor: 'durazno', peso: 400 },
+    { tipo: 'mermelada', marca: 'Arcor', sabor: 'naranja', peso: 400 },
+    { tipo: 'mermelada', marca: 'Arcor', sabor: 'frutos rojos', peso: 400 },
+    { tipo: 'mermelada', marca: 'Noel', sabor: 'frutilla', peso: 400 },
+    { tipo: 'mermelada', marca: 'Noel', sabor: 'durazno', peso: 400 },
+    { tipo: 'mermelada', marca: 'Noel', sabor: 'naranja', peso: 400 },
+    { tipo: 'mermelada', marca: 'Noel', sabor: 'frutos rojos', peso: 400 },
+    { tipo: 'mermelada', marca: 'Limay', sabor: 'frutilla', peso: 400 },
+    { tipo: 'mermelada', marca: 'Limay', sabor: 'durazno', peso: 400 },
+    { tipo: 'mermelada', marca: 'Limay', sabor: 'naranja', peso: 400 },
+    { tipo: 'mermelada', marca: 'Limay', sabor: 'frutos rojos', peso: 400 },
+    // Hierbas
+    { tipo: 'hierba', nombre: 'ajo', peso: 500, utilidad: 'hipolipemiante' },
+    { tipo: 'hierba', nombre: 'aloe vera', peso: 500, utilidad: 'laxante' },
+    { tipo: 'hierba', nombre: 'arandano', peso: 500, utilidad: 'infecciones urinarias' },
+    { tipo: 'hierba', nombre: 'soja', peso: 500, utilidad: 'menopausia y presión arterial' },
+    { tipo: 'hierba', nombre: 'valeriana', peso: 500, utilidad: 'stress y presión arterial' },
+    // Legumbres
+    { tipo: 'legumbre', nombre: 'poroto', peso: 500 },
+    { tipo: 'legumbre', nombre: 'lenteja', peso: 500 },
+    { tipo: 'legumbre', nombre: 'arveja', peso: 500 },
+    { tipo: 'legumbre', nombre: 'garbanzo', peso: 500 }
+])
+
+//Mostrar los datos de las semillas ordenados alfabéticamente
+db.productos.find({ tipo: 'semilla' }).sort({ nombre: 1 })
+
+//Mostrar marca y sabor de las mermeladas de frutilla o durazno
+db.productos.find(
+    { tipo: 'mermelada', sabor: { $in: ['frutilla', 'durazno'] } },
+    { marca: 1, sabor: 1, _id: 0 }
+)
+
+//Mostrar las hierbas que sirven para la presión arterial
+db.productos.find(
+    { tipo: 'hierba', utilidad: /presión arterial/ },
+    { nombre: 1, utilidad: 1, _id: 0 }
+); 
+
+// Mostrar cuantas semillas se venden en paquetes de 250 gr
+db.productos.countDocuments({ tipo: 'semilla', peso: 250 })
+
+//Eliminar las mermeladas de naranja
+db.productos.deleteMany({ tipo: 'mermelada', sabor: 'naranja' })
+
+//Insertar la mermelada Cormillot sabor membrillo
+db.productos.insertOne({ tipo: 'mermelada', marca: 'Cormillot', sabor: 'membrillo', peso: 400 })
